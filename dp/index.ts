@@ -142,7 +142,7 @@ export const add1or2or3Upgrade = (n: number) => {
 export const stairNumber = (n: number) => {
   const d: number[][] = []
   for (let i = 1; i < 9; i++) {
-    d.push([0, 1, 2, 3, 4, 5, 6, 7, 8, 9])
+    d.push([0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
   }
   
   // d[n][k] = n자리의 계단수인데, 마지막에 사용한 숫자가 k인 경우의수
@@ -155,15 +155,127 @@ export const stairNumber = (n: number) => {
 
   for (let i = 2; i <= n; i++) {
     for (let k = 0; k <= 9; k++) {
-      if (k === 9) {
-        d[i][9] = 1
-      } else if (k === 0) {
-        d[i][0] = 1
-      } else {
-        d[i][k] = d[i-1][k-1] + d[i-1][k+1]
+      d[i][k] = 0
+      if (k > 0) {
+        d[i][k] += d[i-1][k-1]
+      }
+      if (k < 9) {
+        d[i][k] += d[i-1][k+1]
       }
     }
   }
 
   return d[n].reduce((a, b) => a+b, 0)
 }
+
+// https://www.acmicpc.net/problem/2193
+export const pinaryNumber = (n: number) => {
+  // d[n][k]: n자리의 이친수의 개수인데 마지막 숫자가 k
+  // k = 0 or 1
+  const d: number[][] = []
+
+  // 초기화
+  for (let i = 0; i <= n; i++) {
+    d[i] = [0, 0]
+  }
+
+  d[1][0] = 0
+  d[1][1] = 1
+
+  // d[n][0] = d[n-1][0] + d[n-1][1]
+  // d[n][1] = d[n-1][0]
+  for (let i = 2; i <= n; i++) {
+    d[i][0] = d[i-1][0] + d[i-1][1]
+    d[i][1] = d[i-1][0]
+  }
+
+  return d[n].reduce((a, b) => a+b, 0)
+}
+
+// https://www.acmicpc.net/problem/11053
+export const longestIncreasingSequence = (seq: number[]) => {
+  // d[n] : n으로 끝나는 가장긴 부분수열
+  const d: number[] = []
+  d[0] = 1
+  for (let i = 1; i < seq.length; i++) {
+    d[i] = 1
+    
+    const avaiableSequenceDistance = []
+    for (let j = 0; j< i; j++) {
+      if (seq[j] < seq[i]) {
+        avaiableSequenceDistance.push(d[j])
+      }
+    }
+
+    if (avaiableSequenceDistance.length > 0) {
+      d[i] = Math.max(...avaiableSequenceDistance) + 1
+    }
+    
+  }
+
+  return Math.max(...d)
+}
+
+// https://www.acmicpc.net/problem/1912
+export const continueSum = (seq: number[]) => {
+  // d[n]: n으로 끝나는 연속합중 가장 큰 것
+  d[0] = seq[0]
+  for (let i = 1; i < seq.length; i++) {
+    d[i] = Math.max(d[i-1] + seq[i], seq[i])
+  }
+
+  return Math.max(...d)
+}
+
+// https://www.acmicpc.net/problem/1699
+export const sumOfSquareNumber = (n : number) => {
+  // d[n]: 자연수n을 제곱수로 나타낸 것중 항의 개수가 제일 작은것
+  const d = []
+  d[0] = 0
+
+  for (let i = 1; i <= n; i++) {
+    // 초기화 1의 제곱으로만 만든것
+    d[i] = i
+
+    if (i < 4) {
+      continue 
+    }
+
+    const possible = []
+    for (let j = 1; j * j <= i; j++) {
+      possible.push(d[i - (j * j)] + 1)
+    }
+
+    d[i] = Math.min(...possible)
+  }
+  return d[n]
+}
+
+// 포기
+// export const sumDecomposition = (n: number, k: number) => {
+//   // d[k][n]: 0부터 n까지의 정수중, k개를 사용해서 만들 수 있는 경우의 수
+//   const d: number[][] = []
+
+//   for (let i = 0; i <= n; i++) {
+//     d[i] = []
+//     for (let j = 0; j <= k; j++) {
+//       d[i][j] = 0
+//     }
+//   }
+
+//   for (let i = 0; i <=k; i++) {
+//     d[i][1] = i
+//   }
+
+//   for (let i = 1; i <= k; i++) {
+//     for (let j = 0; j <= n; j++) {
+//       for (let l = 0; l <= j; l++) {
+//         d[i][j] = d[i][j] + d[i-1][j-l]
+//       }
+//     }
+//   }
+
+//   console.log(d)
+
+//   return d[k][n]
+// }

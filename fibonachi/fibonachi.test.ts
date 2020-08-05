@@ -1,6 +1,6 @@
 import { fibonachMemo, fibonachi, fibonachiBottomToTop } from "."
 
-describe('fibonachi', () => {
+describe.skip('fibonachi', () => {
   it('recursive fibonachi', () => {
     expect(fibonachi(10)).toBe(55)
   })

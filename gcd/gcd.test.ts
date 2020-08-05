@@ -1,6 +1,6 @@
 import { gcd } from "."
 
-describe('gcd & lcm', () => {
+describe.skip('gcd & lcm', () => {
   it('gcd', () => {
     expect(gcd(16, 24)).toBe(8)
   })

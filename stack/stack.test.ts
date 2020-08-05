@@ -1,6 +1,6 @@
 import { editor, editorByStack, openAndClose, reverseWords, reverseWords2, rightBigNumber, stick } from '.'
 
-describe('Stack', () => {
+describe.skip('Stack', () => {
   it('단어 뒤집기', () => {
     const result = reverseWords('hello dany wow')
     expect(result).toEqual('olleh ynad wow')

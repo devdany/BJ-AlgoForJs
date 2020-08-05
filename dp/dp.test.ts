@@ -1,6 +1,6 @@
-import { add1or2or3, add1or2or3Upgrade, buyCard, doubleTile, doubleTitle2, makeTo1, makeTo1BottomUp, stairNumber } from "."
+import { add1or2or3, add1or2or3Upgrade, buyCard, continueSum, doubleTile, doubleTitle2, longestIncreasingSequence, makeTo1, makeTo1BottomUp, pinaryNumber, stairNumber, sumOfSquareNumber } from "."
 
-describe('dp', () => {
+describe.skip('dp', () => {
   it('makeTo1', () => {
     expect(makeTo1(10)).toBe(3)
     expect(makeTo1BottomUp(10)).toBe(3)
@@ -34,7 +34,30 @@ describe('dp', () => {
     expect(add1or2or3Upgrade(10)).toBe(27)
   })
 
-  it('stair number', () => {
+  it('계단수', () => {
     expect(stairNumber(2)).toBe(17)
   })
+
+  it('이친수', () => {
+    expect(pinaryNumber(3)).toBe(2)
+    expect(pinaryNumber(4)).toBe(3)
+    expect(pinaryNumber(5)).toBe(5)
+  })
+
+  it('증가하는 가장 긴 부분수열', () => {
+    expect(longestIncreasingSequence([10, 20, 10, 30, 20, 50]))
+  })
+
+  it('연속합', () => {
+    expect(continueSum([10, -4, 3, 1, 5, 6, -35, 12, 21, -1])).toBe(33)
+  })
+
+  it('제곱수의 합', () => {
+    expect(sumOfSquareNumber(7)).toBe(4)
+    expect(sumOfSquareNumber(11)).toBe(3)
+  })
+
+  // it('합분해', () => {
+  //   expect(sumDecomposition(20, 2)).toBe(21)
+  // })
 })
