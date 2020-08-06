@@ -129,8 +129,6 @@ const convertToString = (arg: number) => {
 
 export const miso2 = (a: string, b: string) => {
   const sum = convertToNum(a) + convertToNum(b)
-  
   const result = convertToString(sum)
-  console.log(result)
   return result
 }

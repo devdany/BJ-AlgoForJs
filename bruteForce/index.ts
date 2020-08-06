@@ -206,7 +206,6 @@ export const factorial = (n: number, m: number) => {
   const result: number[] = []
   const go = (index: number, n: number, m: number) => {
     if (index === m) {
-      console.log(result)
       return
     }
 
