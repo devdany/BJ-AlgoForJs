@@ -1,6 +1,6 @@
-import { miso1, miso2 } from "."
+import { callBus1, callBus2, callBus3, compress, isStraightLine, miso1, miso2, release } from "."
 
-describe('miso', () => {
+describe('test', () => {
   it('miso1', () => {
     expect(miso1(2147483647, 2147483647)).toBe(4294967294)
   })
@@ -16,5 +16,35 @@ describe('miso', () => {
     expect(miso2('만오천사백삼십','십구만삼천오백')).toBe('이십만팔천구백삼십')
     expect(miso2('일조','삼')).toBe('일조삼')
     expect(miso2('일억','만')).toBe('일억일만')
+  })
+
+  it('callbus1', () => {
+    expect(callBus1(2)).toBe(4)
+    expect(callBus1(3)).toBe(8)
+    expect(callBus1(4)).toBe(16)
+  })
+
+  it('callbus2', () => {
+    expect(callBus2(1, 4)).toBe(false)
+    expect(callBus2(3, 3)).toBe(true)
+    expect(callBus2(6, 23)).toBe(false)
+    expect(callBus2(0, 23)).toBe(true)
+    expect(callBus2(0, 3)).toBe(false)
+  })
+
+  it('callbus3', () => {
+    expect(callBus3(6, 4)).toBe(undefined)
+  })
+
+  it('callbus4', () => {
+    expect(compress('ZZZAAAABBCCQ')).toEqual('3Z4A2B2C1Q')
+    expect(release('3Z4A2B2C1Q')).toEqual('ZZZAAAABBCCQ')
+  })
+
+  it('callbus5', () => {
+    expect(isStraightLine(0,0,1,1,2,2)).toBe(true)
+    expect(isStraightLine(-2,-1,2,1,4,2)).toBe(true)
+    expect(isStraightLine(-2,-1,2,1,5,2)).toBe(false)
+    
   })
 })

@@ -132,3 +132,157 @@ export const miso2 = (a: string, b: string) => {
   const result = convertToString(sum)
   return result
 }
+
+export const callBus1 = (n: number) => {
+  return 2 << n-1
+}
+
+const isSunToMonBefore12 = (day: number, hourOfDay: number) => {
+  return day === 6 && hourOfDay === 23
+}
+
+const isMonBefore4 = (day: number, hourOfDay: number) => {
+  return day === 0 && 0 <= hourOfDay && hourOfDay < 4  
+}
+
+export const callBus2 = (day: number, hourOfDay: number): boolean => {
+  // hourOfDay가 04 ~ 23 까지는 아예운행안함
+  if (4 <= hourOfDay && hourOfDay < 23) {
+    return false
+  }
+  // day가 6, hourOfDay가 23 || day가 0 ~ 3:59
+  if (isSunToMonBefore12(day, hourOfDay)) {
+    return false
+  }
+
+  if (isMonBefore4(day, hourOfDay)) {
+    return false
+  }
+
+  return true
+}
+
+export const callBus3 = (row: number, col: number) => {
+  const d: number[][] = []
+  for (let i = 0; i < row; i++) {
+    d[i] = []
+    for (let j = 0; j < col; j++) {
+      d[i][j] = -1
+    }
+  }
+
+  // col ++ -> row ++ -> col -- row -- 반복
+  enum Mode {
+    addCol = 0,
+    addRow = 1,
+    minCol = 2,
+    minRow = 3
+  }
+  let currentMode = Mode.addCol
+  type Position = {
+    i: number
+    j: number
+  }
+  let currentPosition: Position = { i:0, j:0 }
+  let currentValue = 0
+  d[0][0] = 0
+  for (let k = 1; k < row * col; k++) {
+    if (currentMode === Mode.addCol) {
+      if (currentPosition.j+1 === col || d[currentPosition.i][currentPosition.j+1] !== -1) {
+        currentMode = Mode.addRow
+        currentPosition.i = currentPosition.i + 1
+      } else {
+        currentPosition.j = currentPosition.j + 1
+      }
+    } else if (currentMode === Mode.addRow) {
+      if (currentPosition.i + 1 === row || d[currentPosition.i + 1][currentPosition.j] !== -1) {
+        currentMode = Mode.minCol
+        currentPosition.j = currentPosition.j - 1
+      } else {
+        currentPosition.i = currentPosition.i + 1
+      }
+    } else if (currentMode === Mode.minCol) {
+      if (currentPosition.j === 0 || d[currentPosition.i][currentPosition.j-1] !== -1) {
+        currentMode = Mode.minRow
+        currentPosition.i = currentPosition.i - 1
+      } else {
+        currentPosition.j = currentPosition.j - 1
+      }
+    } else {
+      if (currentPosition.i === 0 || d[currentPosition.i-1][currentPosition.j] !== -1) {
+        currentMode = Mode.addCol
+        currentPosition.j = currentPosition.j + 1
+      } else {
+        currentPosition.i = currentPosition.i - 1
+      }
+    }
+    
+    currentValue += 1
+    d[currentPosition.i][currentPosition.j] = currentValue
+  }
+
+  for(let i = 0; i < d.length; i++) {
+    console.log(...d[i])
+  }
+}
+
+export const compress = (released: string) => {
+  if (released.length === 0) {
+    return released
+  }
+  let currentChar = released[0]
+  let cnt = 1
+  let result = ''
+  for (let i = 1; i < released.length; i++) {
+    const char = released[i]
+    if (char === currentChar) {
+      cnt += 1
+    } else {
+      result = result + cnt + currentChar
+      cnt = 1
+      currentChar = char
+    }
+  }
+
+  result = result + cnt + currentChar
+  return result
+}
+
+const isNumberCharacter = (char: string) => {
+  return 48 <= char.charCodeAt(0) && char.charCodeAt(0) <= 57
+}
+
+export const release = (compressed: string) => {
+  let number = ''
+  let result = ''
+  for (let i = 0; i < compressed.length; i++) {
+    const char = compressed[i]
+    if (isNumberCharacter(char)) {
+      number = number + char
+    } else {
+      for (let j = 0; j < Number(number); j++) {
+        result = result + char
+      }
+      number = ''
+    }
+  }
+  return result
+}
+
+export const isStraightLine = (x1: number, y1: number, x2: number, y2: number, x3: number, y3: number) => {
+  // 세점이 한직선에 있으려면, x가 다 같거나 y가 다 같거나, 대각선으로 다 같은거 세가지뿐
+  if (x1 === x2 && x2 === x3) {
+    return true
+  }
+
+  if (y1 === y2 && y2 === y3) {
+    return true
+  }
+
+  // 각각 1/2 2/3 의 기울기가 같으면 같은 선위에 있는것
+  
+  const case1 = (y2-y1) / (x2-x1)
+  const case3 = (y3-y2) / (x3-x2)
+  return case1 === case3
+}
+
